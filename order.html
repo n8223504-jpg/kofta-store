@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Make Order</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+body{
+background:#0b1a33;
+color:white;
+text-align:center;
+font-family:Arial;
+}
+
+input,select{
+padding:10px;
+margin:10px;
+width:250px;
+border-radius:6px;
+border:none;
+}
+
+button{
+padding:12px 20px;
+background:#00c853;
+border:none;
+color:white;
+font-size:16px;
+border-radius:6px;
+cursor:pointer;
+}
+
+button:hover{
+background:#00a844;
+}
+
+.paymentBox{
+margin-top:15px;
+color:#00ffd0;
+font-size:18px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Make Order</h1>
+
+<form onsubmit="sendOrder(event)">
+
+<br>
+
+<select id="game">
+
+<option value="Free Fire">Free Fire</option>
+
+<option value="PUBG">PUBG</option>
+
+<option value="Mobile Legends">Mobile Legends</option>
+
+<option value="Valorant">Valorant</option>
+
+</select>
+
+<br>
+
+<input
+type="text"
+id="playerId"
+placeholder="Player ID"
+required
+>
+
+<br>
+
+<input
+type="number"
+id="amount"
+placeholder="Amount"
+required
+>
+
+<br>
+
+<h3>Payment Method</h3>
+
+<select id="payment">
+
+<option value="Vodafone Cash">
+Vodafone Cash
+</option>
+
+</select>
+
+<div class="paymentBox">
+
+Send money to Vodafone Cash:
+
+<br>
+
+<b>+201018702697</b>
+
+</div>
+
+<br>
+
+<input
+type="text"
+id="transaction"
+placeholder="Transaction ID"
+required
+>
+
+<br><br>
+
+<button type="submit">
+Submit Order
+</button>
+
+</form>
+
+<script>
+
+async function sendOrder(e){
+
+e.preventDefault()
+
+let game =
+document.getElementById("game").value
+
+let playerId =
+document.getElementById("playerId").value
+
+let amount =
+document.getElementById("amount").value
+
+let payment =
+document.getElementById("payment").value
+
+let transaction =
+document.getElementById("transaction").value
+
+
+await fetch("/api/order",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+game,
+playerId,
+amount,
+payment,
+transaction
+
+})
+
+})
+
+
+alert("Order sent successfully")
+
+}
+
+</script>
+
+</body>
+
+</html>

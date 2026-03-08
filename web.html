@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet"/>
+
+<title>kofta-store</title>
+
+<link rel="stylesheet" href="style.css"/>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<img class="logo" src="images/koftaa.png" />
+
+<div class="header-links">
+
+<a href="web.html">Home</a> 
+<a href="#games">Our shop</a> 
+<a href="https://wa.me/201026875367">Contact</a> 
+
+<button id="loginBtn" onclick="window.location.href='login.html'">
+Sign in
+</button>
+
+<button onclick="window.location.href='admin-login.html'">
+Admin
+</button>
+
+<div id="userProfile" style="display:none;align-items:center;gap:10px;color:white;margin-left:10px;">
+<img id="userImage" width="35" height="35" style="border-radius:50%">
+<span id="userName"></span>
+<button onclick="logout()" style="margin-left:10px;background:#ee626b;border:none;padding:6px 10px;border-radius:6px;color:white;cursor:pointer;">
+Logout
+</button>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="landing-page">
+
+<div>
+
+<span>welcome to kofta store</span> 
+<h1></h1>
+<span>the best gaming site ever , because i created it</span>
+<h1></h1>
+<h1></h1>
+
+<div class="landing-page-search">
+
+<input id="searchInput" placeholder="Start Typing"/>
+<button onclick="searchGame()">SEARCH</button>
+
+</div>
+
+</div>
+
+<div class="landing-page-image-container">
+
+<img src="images/OIP.webp" width="300px" height="150px"/>
+
+</div>
+
+</div>
+
+
+<div class="trending-container" id="games">
+
+<span>trending</span>
+
+<div class="trending-header">
+
+<h1>Trending Games</h1>
+
+<button class="button-custom" onclick="showAll()">view all</button>
+
+</div>
+
+
+<div class="trending-cards" id="gamesContainer">
+
+
+<div class="card">
+
+<img src="images/pubg.jpg" width="150">
+
+<h3>PUBG UC</h3>
+
+<p>Charge PUBG UC</p>
+
+<button onclick="window.location.href='pubg.html'">
+Buy Now
+</button>
+
+</div>
+
+
+<div class="card">
+
+<img src="images/ff.jpg" width="150">
+
+<h3>Free Fire</h3>
+
+<p>Charge Diamonds</p>
+
+<button onclick="window.location.href='ff.html'">
+Buy Now
+</button>
+
+</div>
+
+
+<div class="card">
+
+<img src="images/valorant.jpg" width="150" height="150">
+
+<h3>Valorant</h3>
+
+<p>Buy Valorant Points</p>
+
+<button onclick="window.location.href='valorant.html'">
+Buy Now
+</button>
+
+</div>
+
+
+<div class="card">
+
+<img src="images/download.jpg" width="150">
+
+<h3>Mobile Legends Bang Bang</h3>
+
+<p>Buy Mlbb Diamonds</p>
+
+<button onclick="window.location.href='mlbb.html'">
+Buy Now
+</button>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<script>
+
+const name = localStorage.getItem("userName")
+const image = localStorage.getItem("userImage")
+
+if(name){
+
+document.getElementById("loginBtn").style.display="none"
+
+document.getElementById("userProfile").style.display="flex"
+
+document.getElementById("userName").innerText=name
+
+document.getElementById("userImage").src=image
+
+}
+
+function logout(){
+
+localStorage.removeItem("userName")
+localStorage.removeItem("userImage")
+
+location.reload()
+
+}
+
+
+async function loadGames(){
+
+try{
+
+const res = await fetch("/api/games");
+const games = await res.json();
+const container = document.getElementById("gamesContainer");
+
+games.forEach(game=>{
+
+const card = document.createElement("div");
+card.className="card";
+
+card.innerHTML = `
+<img src="images/default.png" width="150">
+<h3>${game.name}</h3>
+<p>Charge ${game.name}</p>
+<button onclick="alert('Game page coming soon')">Buy Now</button>
+`;
+
+container.appendChild(card);
+
+});
+
+}catch(err){
+
+console.log("Error loading games",err);
+
+}
+
+}
+
+loadGames();
+
+
+function searchGame(){
+
+const input = document.getElementById("searchInput").value.toLowerCase()
+const cards = document.querySelectorAll(".card")
+
+cards.forEach(card=>{
+
+const title = card.querySelector("h3").innerText.toLowerCase()
+
+if(title.includes(input)){
+card.style.display="block"
+}else{
+card.style.display="none"
+}
+
+})
+
+}
+
+
+function showAll(){
+
+const cards = document.querySelectorAll(".card")
+
+cards.forEach(card=>{
+card.style.display="block"
+})
+
+}
+
+</script>
+
+</body>
+</html>
